@@ -623,7 +623,6 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 	} else {
 		urlPath = r.URL.EscapedPath()
 	}
-    Info("[ServerHTTP] %s", urlPath)
 	// filter wrong http method
 	if _, ok := HTTPMETHOD[r.Method]; !ok {
 		http.Error(rw, "Method Not Allowed", 405)
