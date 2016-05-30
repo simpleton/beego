@@ -619,11 +619,11 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 
 	var urlPath string
 	if !BConfig.RouterCaseSensitive {
-		urlPath = strings.ToLower(r.URL.Path)
+		urlPath = strings.ToLower(r.URL.EscapedPath())
 	} else {
-		urlPath = r.URL.Path
+		urlPath = r.URL.EscapedPath()
 	}
-
+    Info("[ServerHTTP] %s", urlPath)
 	// filter wrong http method
 	if _, ok := HTTPMETHOD[r.Method]; !ok {
 		http.Error(rw, "Method Not Allowed", 405)
@@ -807,9 +807,9 @@ Admin:
 	if BConfig.Listen.EnableAdmin {
 		if FilterMonitorFunc(r.Method, r.URL.Path, timeDur) {
 			if runRouter != nil {
-				go toolbox.StatisticsMap.AddStatistics(r.Method, r.URL.Path, runRouter.Name(), timeDur)
+				go toolbox.StatisticsMap.AddStatistics(r.Method, r.URL.EscapedPath(), runRouter.Name(), timeDur)
 			} else {
-				go toolbox.StatisticsMap.AddStatistics(r.Method, r.URL.Path, "", timeDur)
+				go toolbox.StatisticsMap.AddStatistics(r.Method, r.URL.EscapedPath(), "", timeDur)
 			}
 		}
 	}
@@ -818,12 +818,12 @@ Admin:
 		var devInfo string
 		if findRouter {
 			if routerInfo != nil {
-				devInfo = fmt.Sprintf("| % -10s | % -40s | % -16s | % -10s | % -40s |", r.Method, r.URL.Path, timeDur.String(), "match", routerInfo.pattern)
+				devInfo = fmt.Sprintf("| % -10s | % -40s | % -16s | % -10s | % -40s |", r.Method, r.URL.EscapedPath(), timeDur.String(), "match", routerInfo.pattern)
 			} else {
-				devInfo = fmt.Sprintf("| % -10s | % -40s | % -16s | % -10s |", r.Method, r.URL.Path, timeDur.String(), "match")
+				devInfo = fmt.Sprintf("| % -10s | % -40s | % -16s | % -10s |", r.Method, r.URL.EscapedPath(), timeDur.String(), "match")
 			}
 		} else {
-			devInfo = fmt.Sprintf("| % -10s | % -40s | % -16s | % -10s |", r.Method, r.URL.Path, timeDur.String(), "notmatch")
+			devInfo = fmt.Sprintf("| % -10s | % -40s | % -16s | % -10s |", r.Method, r.URL.EscapedPath(), timeDur.String(), "notmatch")
 		}
 		if DefaultAccessLogFilter == nil || !DefaultAccessLogFilter.Filter(context) {
 			Debug(devInfo)
