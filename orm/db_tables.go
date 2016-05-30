@@ -455,13 +455,13 @@ func (t *dbTables) getLimitSQL(mi *modelInfo, offset int64, limit int64) (limits
 			if maxLimit == 0 {
 				limits = fmt.Sprintf("OFFSET %d", offset)
 			} else {
-				limits = fmt.Sprintf("LIMIT %d OFFSET %d", maxLimit, offset)
+				limits = fmt.Sprintf("LIMIT %d, %d", offset, maxLimit)
 			}
 		}
 	} else if offset <= 0 {
 		limits = fmt.Sprintf("LIMIT %d", limit)
 	} else {
-		limits = fmt.Sprintf("LIMIT %d OFFSET %d", limit, offset)
+		limits = fmt.Sprintf("LIMIT %d, %d", offset, limit)
 	}
 	return
 }
