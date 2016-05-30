@@ -19,8 +19,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/logs"
+	"github.com/simpleton/beego/context"
+	"github.com/simpleton/beego/logs"
 )
 
 func init() {

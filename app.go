@@ -23,8 +23,8 @@ import (
 	"path"
 	"time"
 
-	"github.com/astaxie/beego/grace"
-	"github.com/astaxie/beego/utils"
+	"github.com/simpleton/beego/grace"
+	"github.com/simpleton/beego/utils"
 )
 
 var (

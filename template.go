@@ -26,7 +26,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/astaxie/beego/utils"
+	"github.com/simpleton/beego/utils"
 )
 
 var (

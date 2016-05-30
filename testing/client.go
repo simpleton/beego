@@ -15,8 +15,8 @@
 package testing
 
 import (
-	"github.com/astaxie/beego/config"
-	"github.com/astaxie/beego/httplib"
+	"github.com/simpleton/beego/config"
+	"github.com/simpleton/beego/httplib"
 )
 
 var port = ""
