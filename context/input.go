@@ -268,7 +268,8 @@ func (input *BeegoInput) ParamsLen() int {
 func (input *BeegoInput) Param(key string) string {
 	for i, v := range input.pnames {
 		if v == key && i <= len(input.pvalues) {
-			return input.pvalues[i]
+			unescapeValue, _ := url.QueryUnescape(input.pvalues[i])
+			return unescapeValue
 		}
 	}
 	return ""
@@ -279,7 +280,8 @@ func (input *BeegoInput) Params() map[string]string {
 	m := make(map[string]string)
 	for i, v := range input.pnames {
 		if i <= len(input.pvalues) {
-			m[v] = input.pvalues[i]
+			unescapeValue, _ := url.QueryUnescape(input.pvalues[i])
+			m[v] = unescapeValue
 		}
 	}
 	return m
