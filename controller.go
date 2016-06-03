@@ -266,6 +266,7 @@ func (c *Controller) CustomAbort(status int, body string) {
 	if _, ok := ErrorMaps[body]; ok {
 		panic(body)
 	}
+	c.Ctx.ResponseWriter.WriteHeader(status)
 	// last panic user string
 	c.Ctx.ResponseWriter.Write([]byte(body))
 	panic(ErrAbort)
