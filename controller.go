@@ -266,6 +266,7 @@ func (c *Controller) CustomAbort(status int, body string) {
 	if _, ok := ErrorMaps[body]; ok {
 		panic(body)
 	}
+	c.Ctx.ResponseWriter.Header().Set("Content-Type", "application/json; charset=utf-8")
 	c.Ctx.ResponseWriter.WriteHeader(status)
 	// last panic user string
 	c.Ctx.ResponseWriter.Write([]byte(body))
