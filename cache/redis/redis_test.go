@@ -18,9 +18,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/garyburd/redigo/redis"
-
 	"github.com/simpleton/beego/cache"
+	"github.com/garyburd/redigo/redis"
 )
 
 func TestRedisCache(t *testing.T) {

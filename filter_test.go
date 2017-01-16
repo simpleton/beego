@@ -23,11 +23,6 @@ import (
 	"github.com/simpleton/beego/logs"
 )
 
-func init() {
-	BeeLogger = logs.NewLogger(10000)
-	BeeLogger.SetLogger("console", "")
-}
-
 var FilterUser = func(ctx *context.Context) {
 	ctx.Output.Body([]byte("i am " + ctx.Input.Param(":last") + ctx.Input.Param(":first")))
 }

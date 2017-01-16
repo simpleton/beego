@@ -23,6 +23,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -82,11 +83,14 @@ func (ini *IniConfig) parseFile(name string) (*IniConfigContainer, error) {
 		if err == io.EOF {
 			break
 		}
+		//It might be a good idea to throw a error on all unknonw errors?
+		if _, ok := err.(*os.PathError); ok {
+			return nil, err
+		}
+		line = bytes.TrimSpace(line)
 		if bytes.Equal(line, bEmpty) {
 			continue
 		}
-		line = bytes.TrimSpace(line)
-
 		var bComment []byte
 		switch {
 		case bytes.HasPrefix(line, bNumComment):
@@ -129,8 +133,8 @@ func (ini *IniConfig) parseFile(name string) (*IniConfigContainer, error) {
 			includefiles := strings.Fields(key)
 			if includefiles[0] == "include" && len(includefiles) == 2 {
 				otherfile := strings.Trim(includefiles[1], "\"")
-				if !path.IsAbs(otherfile) {
-					otherfile = path.Join(path.Dir(name), otherfile)
+				if !filepath.IsAbs(otherfile) {
+					otherfile = filepath.Join(filepath.Dir(name), otherfile)
 				}
 				i, err := ini.parseFile(otherfile)
 				if err != nil {
@@ -162,7 +166,7 @@ func (ini *IniConfig) parseFile(name string) (*IniConfigContainer, error) {
 			val = bytes.Trim(val, `"`)
 		}
 
-		cfg.data[section][key] = string(val)
+		cfg.data[section][key] = ExpandValueEnv(string(val))
 		if comment.Len() > 0 {
 			cfg.keyComment[section+"."+key] = comment.String()
 			comment.Reset()
@@ -296,7 +300,9 @@ func (c *IniConfigContainer) GetSection(section string) (map[string]string, erro
 	return nil, errors.New("not exist setction")
 }
 
-// SaveConfigFile save the config into file
+// SaveConfigFile save the config into file.
+//
+// BUG(env): The environment variable config item will be saved with real value in SaveConfigFile Funcation.
 func (c *IniConfigContainer) SaveConfigFile(filename string) (err error) {
 	// Write configuration file by filename.
 	f, err := os.Create(filename)
