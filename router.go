@@ -639,11 +639,10 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 		context.Output.Header("Server", BConfig.ServerName)
 	}
 
-	var urlPath = r.URL.Path
+	var urlPath = r.URL.EscapedPath()
 
 	if !BConfig.RouterCaseSensitive {
-		urlPath = strings.ToLower(r.URL.Path)
-		urlPath = r.URL.Path
+		urlPath = strings.ToLower(r.URL.EscapedPath())
 	}
 	// filter wrong http method
 	if _, ok := HTTPMETHOD[r.Method]; !ok {
@@ -830,7 +829,7 @@ Admin:
 	//admin module record QPS
 	if BConfig.Listen.EnableAdmin {
 		timeDur := time.Since(startTime)
-		if FilterMonitorFunc(r.Method, r.URL.Path, timeDur) {
+		if FilterMonitorFunc(r.Method, r.URL.EscapedPath(), timeDur) {
 			if runRouter != nil {
 				go toolbox.StatisticsMap.AddStatistics(r.Method, r.URL.EscapedPath(), runRouter.Name(), timeDur)
 			} else {
@@ -856,15 +855,15 @@ Admin:
 		if findRouter {
 			if routerInfo != nil {
 				devInfo = fmt.Sprintf("|%15s|%s %3d %s|%13s|%8s|%s %-7s %s %-3s   r:%s", context.Input.IP(), statusColor, statusCode,
-					resetColor, timeDur.String(), "match", methodColor, r.Method, resetColor, r.URL.Path,
+					resetColor, timeDur.String(), "match", methodColor, r.Method, resetColor, r.URL.EscapedPath(),
 					routerInfo.pattern)
 			} else {
 				devInfo = fmt.Sprintf("|%15s|%s %3d %s|%13s|%8s|%s %-7s %s %-3s", context.Input.IP(), statusColor, statusCode, resetColor,
-					timeDur.String(), "match", methodColor, r.Method, resetColor, r.URL.Path)
+					timeDur.String(), "match", methodColor, r.Method, resetColor, r.URL.EscapedPath())
 			}
 		} else {
 			devInfo = fmt.Sprintf("|%15s|%s %3d %s|%13s|%8s|%s %-7s %s %-3s", context.Input.IP(), statusColor, statusCode, resetColor,
-				timeDur.String(), "nomatch", methodColor, r.Method, resetColor, r.URL.Path)
+				timeDur.String(), "nomatch", methodColor, r.Method, resetColor, r.URL.EscapedPath())
 		}
 		if iswin {
 			logs.W32Debug(devInfo)
