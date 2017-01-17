@@ -84,6 +84,10 @@ func (input *BeegoInput) URL() string {
 	return input.Context.Request.URL.Path
 }
 
+func (input *BeegoInput) EscapedPath() string {
+	return input.Context.Request.URL.EscapedPath()
+}
+
 // Site returns base site url as scheme://domain type.
 func (input *BeegoInput) Site() string {
 	return input.Scheme() + "://" + input.Domain()

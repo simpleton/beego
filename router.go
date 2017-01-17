@@ -880,7 +880,7 @@ Admin:
 
 // FindRouter Find Router info for URL
 func (p *ControllerRegister) FindRouter(context *beecontext.Context) (routerInfo *controllerInfo, isFind bool) {
-	var urlPath = context.Input.URL()
+	var urlPath = context.Input.EscapedPath()
 	if !BConfig.RouterCaseSensitive {
 		urlPath = strings.ToLower(urlPath)
 	}
