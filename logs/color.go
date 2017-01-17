@@ -17,7 +17,7 @@
 package logs
 
 import "io"
-	"github.com/simpleton/beego/context"
+
 type ansiColorWriter struct {
 	w    io.Writer
 	mode outputMode

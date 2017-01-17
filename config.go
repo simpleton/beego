@@ -23,8 +23,8 @@ import (
 	"strings"
 
 	"github.com/simpleton/beego/config"
-	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/logs"
+	"github.com/simpleton/beego/context"
+	"github.com/simpleton/beego/logs"
 	"github.com/simpleton/beego/session"
 	"github.com/simpleton/beego/utils"
 )
