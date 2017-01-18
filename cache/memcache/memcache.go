@@ -39,7 +39,6 @@ import (
 	"time"
 
 	"github.com/simpleton/beego/cache"
-	"github.com/bradfitz/gomemcache/memcache"
 )
 
 // Cache Memcache adapter.
